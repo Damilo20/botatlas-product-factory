@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BotAtlas Product",
+  "type": "object",
+  "required": [
+    "productId",
+    "name",
+    "manufacturer",
+    "category",
+    "verification"
+  ],
+  "properties": {
+    "productId": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "manufacturer": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "technical": {
+      "type": "object"
+    },
+    "media": {
+      "type": "object"
+    },
+    "marketplace": {
+      "type": "object"
+    },
+    "seo": {
+      "type": "object"
+    },
+    "verification": {
+      "type": "object"
+    }
+  }
+}
