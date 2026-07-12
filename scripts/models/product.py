@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 from scripts.models.evidence import Evidence
+from scripts.models.claim import Claim
 
 @dataclass
 class Product:
@@ -67,6 +68,7 @@ class Product:
     notes: list = field(default_factory=list)
 
     evidence: list[Evidence] = field(default_factory=list)
+    claims: list[Claim] = field(default_factory=list)
 
     def __str__(self):
 
