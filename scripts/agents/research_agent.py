@@ -85,7 +85,7 @@ class ResearchAgent:
                             source_name="Official Figure AI Website",
                             source_url=result.official_url,
                             source_type="MANUFACTURER",
-                            confidence_score=result.confidence_score,
+                            confidence_score=result.confidence_score / 100.0,
                             verified=True,
                         )
                     )
