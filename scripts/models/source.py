@@ -14,10 +14,14 @@ class Source:
     source_name: str
     source_url: str
 
+    source_id: Optional[str] = None
     domain: Optional[str] = None
+
     source_type: str = "UNKNOWN"
+    ownership_type: str = "UNKNOWN"
 
     authority_score: float = 0.0
+    reputation_score: float = 0.0
 
     discovered_at: Optional[str] = None
     last_checked: Optional[str] = None
