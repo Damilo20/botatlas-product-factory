@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-@dataclass
+@dataclass(slots=True)
 class DiscoveryCandidate:
     """
     Represents a possible product discovered by BotAtlas.

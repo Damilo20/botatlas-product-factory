@@ -169,6 +169,58 @@ def audit_discovery_pipeline():
     print("PASS: DiscoveryPipeline preserves Layer 6 trust boundary")
 
 
+
+def audit_runtime_trust_injection():
+    print("\n=== RUNTIME TRUST INJECTION AUDIT ===")
+
+    candidate = DiscoveryCandidate(
+        candidate_name="Figure 02",
+        candidate_url="https://www.figure.ai/",
+        discovery_method="ADVERSARIAL",
+        candidate_type="ROBOT",
+    )
+
+    pipeline = DiscoveryPipeline()
+
+    materials = pipeline.discover_and_process(
+        candidate_name="Figure 02",
+        candidate_url="https://www.figure.ai/",
+        discovery_method="ADVERSARIAL",
+        candidate_type="ROBOT",
+        content="Figure 02 product reference material",
+    )
+
+    assert len(materials) == 1
+
+    targets = [
+        ("DiscoveryCandidate", candidate),
+        ("AcquiredMaterial", materials[0]),
+    ]
+
+    violations = []
+
+    for label, obj in targets:
+        for field_name in FORBIDDEN_TRUST_FIELDS:
+            try:
+                setattr(obj, field_name, True)
+            except (AttributeError, TypeError):
+                continue
+
+            if hasattr(obj, field_name):
+                violations.append(
+                    f"{label}.{field_name}"
+                )
+
+    assert not violations, (
+        "Runtime trust injection possible:\n"
+        + "\n".join(sorted(violations))
+    )
+
+    print(
+        "PASS: Layer 6 runtime trust injection blocked"
+    )
+
+
 def audit_static_trust_assignments():
     print("\n=== STATIC TRUST ASSIGNMENT AUDIT ===")
 
@@ -203,6 +255,7 @@ def main():
     audit_contracts()
     audit_behavior()
     audit_discovery_pipeline()
+    audit_runtime_trust_injection()
     audit_static_trust_assignments()
 
     print("\n=== ARCHITECTURE RESULT ===")
