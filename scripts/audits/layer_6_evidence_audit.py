@@ -4,6 +4,7 @@ from pathlib import Path
 from scripts.engine.acquisition_engine import AcquisitionEngine
 from scripts.engine.candidate_deduplicator import CandidateDeduplicator
 from scripts.engine.discovery_engine import DiscoveryEngine
+from scripts.engine.discovery_pipeline import DiscoveryPipeline
 from scripts.models.acquired_material import AcquiredMaterial
 from scripts.models.discovery_candidate import DiscoveryCandidate
 
@@ -22,6 +23,7 @@ LAYER_6_FILES = [
     Path("scripts/models/discovery_candidate.py"),
     Path("scripts/models/acquired_material.py"),
     Path("scripts/engine/discovery_engine.py"),
+    Path("scripts/engine/discovery_pipeline.py"),
     Path("scripts/engine/acquisition_engine.py"),
     Path("scripts/engine/candidate_deduplicator.py"),
 ]
@@ -131,6 +133,42 @@ def audit_behavior():
     )
 
 
+
+def audit_discovery_pipeline():
+    print("\n=== DISCOVERY PIPELINE AUDIT ===")
+
+    pipeline = DiscoveryPipeline()
+
+    materials = pipeline.discover_and_process(
+        candidate_name="Figure 02",
+        candidate_url="https://www.figure.ai/",
+        discovery_method="AUDIT",
+        candidate_type="ROBOT",
+        content="Figure 02 product reference material",
+    )
+
+    assert len(materials) == 1, (
+        f"Expected 1 acquired material, found {len(materials)}"
+    )
+
+    material = materials[0]
+    material_fields = {
+        field.name for field in fields(material)
+    }
+
+    leaked_fields = material_fields.intersection(
+        FORBIDDEN_TRUST_FIELDS
+    )
+
+    assert not leaked_fields, (
+        "DiscoveryPipeline leaked trust fields: "
+        + ", ".join(sorted(leaked_fields))
+    )
+
+    print(f"PIPELINE OUTPUTS: {len(materials)}")
+    print("PASS: DiscoveryPipeline preserves Layer 6 trust boundary")
+
+
 def audit_static_trust_assignments():
     print("\n=== STATIC TRUST ASSIGNMENT AUDIT ===")
 
@@ -164,6 +202,7 @@ def main():
     audit_file_inventory()
     audit_contracts()
     audit_behavior()
+    audit_discovery_pipeline()
     audit_static_trust_assignments()
 
     print("\n=== ARCHITECTURE RESULT ===")
