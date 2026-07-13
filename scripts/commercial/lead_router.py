@@ -12,6 +12,7 @@ class LeadRoutingError(ValueError):
 class LeadRoute:
     inquiry_reference: str
     product_name: str
+    product_url: str
     seller_name: str
     seller_destination_url: str
     qualification_signal: str
@@ -22,9 +23,12 @@ class LeadRouter:
     """
     Routes qualified commercial inquiries through registered offers.
 
+    Product URL is the commercial identity lookup key.
+
     Commercial routing consumes product identity.
 
-    Commercial routing does not write intelligence conclusions.
+    Commercial routing does not rank evidence, verify products,
+    resolve claims, assign trust, or decide truth.
     """
 
     def __init__(
@@ -37,16 +41,9 @@ class LeadRouter:
         self,
         lead: QualifiedLead,
     ) -> LeadRoute:
-        offers = self.offer_registry.get_offers_for_product(
-            lead.product_name,
-            lead.product_url,
+        active_offers = self.offer_registry.get_active_offers(
+            lead.product_url
         )
-
-        active_offers = [
-            offer
-            for offer in offers
-            if offer.active
-        ]
 
         if not active_offers:
             raise LeadRoutingError(
@@ -58,7 +55,8 @@ class LeadRouter:
         return LeadRoute(
             inquiry_reference=lead.inquiry_reference,
             product_name=lead.product_name,
+            product_url=lead.product_url,
             seller_name=offer.seller_name,
-            seller_destination_url=offer.commercial_destination_url,
+            seller_destination_url=offer.destination_url,
             qualification_signal=lead.qualification_signal.value,
         )
