@@ -1,113 +1,43 @@
-from dataclasses import dataclass, field
-from typing import Optional
+from dataclasses import dataclass
 
-from scripts.models.evidence import Evidence
-from scripts.models.claim import Claim
 
 @dataclass
 class Product:
-    """Master product object used across BotAtlas."""
 
-    # -------------------------
-    # Identity
-    # -------------------------
+    product_id: str = ""
 
-    product_id: str
-    product_name: str
+    product_name: str = ""
 
-    manufacturer: Optional[str] = None
-    brand: Optional[str] = None
-    model: Optional[str] = None
-    category: Optional[str] = None
+    manufacturer: str = ""
 
-    # -------------------------
-    # Technical
-    # -------------------------
+    brand: str = ""
 
-    weight: Optional[str] = None
-    runtime: Optional[str] = None
-    battery: Optional[str] = None
-    connectivity: Optional[str] = None
+    model: str = ""
 
-    # -------------------------
-    # Content
-    # -------------------------
+    category: str = ""
 
-    description: Optional[str] = None
-    ai_summary: Optional[str] = None
+    primary_use: str = ""
 
-    # -------------------------
-    # Pricing
-    # -------------------------
+    industry: str = ""
 
-    msrp: Optional[float] = None
-    current_price: Optional[float] = None
-    currency: str = "USD"
+    environment: str = ""
 
-    official_store: Optional[str] = None
-    amazon_url: Optional[str] = None
-    affiliate_url: Optional[str] = None
+    target_user: str = ""
 
-    # -------------------------
-    # Trust
-    # -------------------------
+    mobility: str = ""
 
-    official_url: Optional[str] = None
+    autonomy_level: str = ""
 
-    quality_score: float = 0.0
+    status: str = ""
 
-    # -------------------------
-    # # Intelligence
-    # -------------------------
+    description: str = ""
 
-    confidence_score: float = 0.0
-    verification_status: str = "Pending"
+    msrp: float = 0.0
 
-    sources: list = field(default_factory=list)
-    warnings: list = field(default_factory=list)
-    notes: list = field(default_factory=list)
+    current_price: float = 0.0
 
-    evidence: list[Evidence] = field(default_factory=list)
-    claims: list[Claim] = field(default_factory=list)
+    affiliate_link: str = ""
 
-    def __str__(self):
+    last_ai_analysis: str = ""
 
-        return f"""
-
-==================================================
-BOTATLAS PRODUCT REPORT
-==================================================
-
-Name:             {self.product_name}
-Product ID:       {self.product_id}
-
-Manufacturer:     {self.manufacturer}
-Brand:            {self.brand}
-Model:            {self.model}
-Category:         {self.category}
-
-Weight:           {self.weight}
-Runtime:          {self.runtime}
-Battery:          {self.battery}
-Connectivity:     {self.connectivity}
-
-MSRP:             {self.msrp}
-Current Price:    {self.current_price}
-Currency:         {self.currency}
-
-Official Store:   {self.official_store}
-Amazon:           {self.amazon_url}
-Affiliate Link:   {self.affiliate_url}
-
-Official Source:  {self.official_url}
-
-Quality Score:         {self.quality_score}%
-Confidence Score:      {self.confidence_score}%
-Verification Status:   {self.verification_status}
-
-Sources:                {self.sources}
-Warnings:               {self.warnings}
-Notes:                  {self.notes}
-
-==================================================
-"""
+    ai_version: str = ""
