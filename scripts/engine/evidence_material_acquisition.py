@@ -8,7 +8,8 @@ from scripts.models.retrieved_evidence_material import (
 )
 
 
-class MaterialRetriever(Protocol):
+class EvidenceMaterialRetriever
+(Protocol):
     """
     Provider-neutral material retrieval boundary.
     """
@@ -33,7 +34,7 @@ class EvidenceMaterialAcquisition:
 
     def __init__(
         self,
-        retriever: MaterialRetriever,
+        retriever: EvidenceMaterialRetriever,
     ):
         self.retriever = retriever
 

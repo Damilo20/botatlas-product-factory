@@ -15,6 +15,6 @@ class RetrievalAdapter(ABC):
     @abstractmethod
     def retrieve(
         self,
-        target: EvidenceSearchTarget,
+        search_target: EvidenceSearchTarget
     ) -> list[RetrievalResult]:
         raise NotImplementedError

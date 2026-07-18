@@ -1,27 +1,21 @@
-from scripts.models.discovery_candidate import DiscoveryCandidate
+"""
+Discovery Engine
 
+Purpose
+-------
+Creates canonical DiscoveryCandidate objects from raw discovery results.
 
-class DiscoveryEngine:
-    """
-    BotAtlas Layer 6 discovery boundary.
+Responsibilities
+----------------
+- Normalize discovery metadata.
+- Create discovery candidates.
+- Preserve discovery provenance.
 
-    Generates discovery candidates from raw discovery inputs.
-
-    A discovery candidate is not verified.
-    Discovery success does not establish truth, confidence,
-    source authority, reputation, or claim selection.
-    """
-
-    def discover(
-        self,
-        candidate_name: str,
-        candidate_url: str,
-        discovery_method: str = "UNKNOWN",
-        candidate_type: str = "UNKNOWN",
-    ) -> DiscoveryCandidate:
-        return DiscoveryCandidate(
-            candidate_name=candidate_name,
-            candidate_url=candidate_url,
-            discovery_method=discovery_method,
-            candidate_type=candidate_type,
-        )
+Non-Responsibilities
+--------------------
+- Evidence evaluation
+- Authority scoring
+- Claim extraction
+- Truth determination
+- Product enrichment
+"""
