@@ -1,10 +1,29 @@
 """
 BotAtlas Product Processing Pipeline
+
+Coordinates the Product Domain workflow.
+
+Responsibilities
+----------------
+- Acquire products
+- Validate products
+- Normalize products
+- Enrich products
+
+Non-Responsibilities
+--------------------
+- Evidence retrieval
+- Claim extraction
+- Truth resolution
+- Product persistence
 """
 
 from scripts.commercial.product_acquisition_engine import ProductAcquisitionEngine
-from scripts.commercial.product_normalization_engine import ProductNormalizationEngine
 from scripts.commercial.product_validation_engine import ProductValidationEngine
+from scripts.commercial.product_normalization_engine import ProductNormalizationEngine
+from scripts.commercial.product_enrichment_engine import ProductEnrichmentEngine
+
+from scripts.models.product import Product
 
 
 class ProductPipeline:
@@ -15,13 +34,16 @@ class ProductPipeline:
 
         self.validation = ProductValidationEngine()
 
-        self.normalizer = ProductNormalizationEngine()
+        self.normalization = ProductNormalizationEngine()
 
-    def process(self, raw_product):
+        self.enrichment = ProductEnrichmentEngine()
+
+    def process(
+        self,
+        raw_product,
+    ) -> Product | None:
 
         product = self.acquisition.acquire_from_manual(raw_product)
-
-        product = self.normalizer.normalize(product)
 
         validation = self.validation.validate(product)
 
@@ -33,6 +55,10 @@ class ProductPipeline:
 
             return None
 
-        print("Validation Passed")
+        product = self.normalization.normalize(product)
+
+        product = self.enrichment.enrich(product)
+
+        print("Pipeline Completed")
 
         return product
