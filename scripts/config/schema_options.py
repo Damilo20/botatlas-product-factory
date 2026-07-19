@@ -34,44 +34,73 @@ STATUS = {
 
 CATEGORIES = {
 
-    "humanoid": "Humanoid Robots",
+    # Humanoids
+    "humanoid robot": "Humanoid Robots",
+    "humanoid robots": "Humanoid Robots",
 
-    "home": "Home Robots",
-
-    "drone": "Drones",
-
+    # Industrial
+    "industrial robot": "Industrial Robots",
+    "industrial robots": "Industrial Robots",
     "industrial": "Industrial Robots",
 
+    # Educational
+    "educational robot": "Educational Robots",
+    "educational robots": "Educational Robots",
     "educational": "Educational Robots",
 
-    "robot_pet": "Robot Pets",
+    # Pets
+    "robot pet": "Robot Pets",
+    "robot pets": "Robot Pets",
 
-    "ai_companion": "AI Companions",
+    # Companion
+    "ai companion": "AI Companions",
+    "ai companions": "AI Companions",
+    "companion": "AI Companions",
 
+    # Security
+    "security robot": "Security Robots",
+    "security robots": "Security Robots",
     "security": "Security Robots",
 
+    # Home
+    "home robot": "Home Robots",
+    "home robots": "Home Robots",
+    "home": "Home Robots",
+
+    # Drone
+    "drone": "Drones",
+    "drones": "Drones",
+
+    # Consumer electronics
     "tablet": "Tablets",
+    "tablets": "Tablets",
 
-    "smart_display": "Smart Displays",
+    "smart display": "Smart Displays",
+    "smart displays": "Smart Displays",
 
-    "home_appliance": "Home Appliances",
+    "home appliance": "Home Appliances",
+    "home appliances": "Home Appliances",
+
+    "kitchen appliance": "Kitchen Appliances",
+    "kitchen appliances": "Kitchen Appliances",
 
     "wearable": "Wearables",
+    "wearables": "Wearables",
 
     "audio": "Audio",
 
     "camera": "Cameras",
+    "cameras": "Cameras",
 
-    "e_reader": "E-Readers",
+    "e-reader": "E-Readers",
+    "ereader": "E-Readers",
 
-    "smart_home": "Smart Home",
+    "smart home": "Smart Home",
 
-    "smart_lighting": "Smart Lighting",
+    "smart lighting": "Smart Lighting",
 
-    "computer_accessory": "Computer Accessories",
-
-    "kitchen_appliance": "Kitchen Appliances"
-
+    "computer accessory": "Computer Accessories",
+    "computer accessories": "Computer Accessories",
 }
 
 # ==========================================================
@@ -246,10 +275,17 @@ AUTONOMY = {
 
     "remote": "Remote Controlled",
 
+    "remote controlled": "Remote Controlled",
+
     "assisted": "Assisted",
 
     "semi": "Semi-Autonomous",
 
-    "full": "Fully Autonomous"
+    "semi autonomous": "Semi-Autonomous",
 
+    "semi-autonomous": "Semi-Autonomous",
+
+    "full": "Fully Autonomous",
+
+    "fully autonomous": "Fully Autonomous",
 }

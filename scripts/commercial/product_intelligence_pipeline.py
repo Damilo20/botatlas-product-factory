@@ -1,25 +1,30 @@
+"""
+BotAtlas Product Intelligence Pipeline
+
+Coordinates the complete product intelligence workflow.
+
+This is the primary entry point for product processing.
+"""
+
+from scripts.commercial.product_pipeline import ProductPipeline
 from scripts.repositories.product_repository import ProductRepository
 
 
 class ProductIntelligencePipeline:
 
     def __init__(self):
-        self.products = ProductRepository()
 
-    def run(self):
-        print("=" * 60)
-        print("BOTATLAS PRODUCT INTELLIGENCE PIPELINE")
-        print("=" * 60)
+        self.pipeline = ProductPipeline()
 
-        records = self.products.list_products()
+        self.repository = ProductRepository()
 
-        print(f"Products Found: {len(records)}")
+    def process(self, raw_product):
 
-        for product in records:
-            fields = product["fields"]
+        product = self.pipeline.process(raw_product)
 
-            print("-" * 60)
-            print(fields.get("Product Name", "Unnamed"))
-            print(fields.get("Category", ""))
-            print(fields.get("Primary Use", ""))
-            print(fields.get("Status", ""))
+        if product is None:
+            return None
+
+        self.repository.create_product(product.to_airtable())
+
+        return product

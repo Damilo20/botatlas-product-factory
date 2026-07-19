@@ -35,17 +35,31 @@ MODEL = "Model"
 
 CATEGORY = "Category"
 
-SUBCATEGORY = "Subcategory"
+PRIMARY_USE = "Primary Use"
+
+INDUSTRY = "Industry"
+
+ENVIRONMENT = "Environment"
+
+TARGET_USER = "Target User"
+
+MOBILITY = "Mobility"
+
+AUTONOMY_LEVEL = "Autonomy Level"
 
 DESCRIPTION = "Description"
 
-AI_SUMMARY = "AI Summary"
+AI_SUMMARY = "AI Executive Summary"
 
 MSRP = "MSRP"
 
 CURRENT_PRICE = "Current Price"
 
-AFFILIATE_LINKS = "Affiliate Links"
+AFFILIATE_LINK = "Affiliate Links"
+
+AI_VERSION = "AI Version"
+
+LAST_AI_ANALYSIS = "Last AI Analysis"
 
 
 # ======================================================
