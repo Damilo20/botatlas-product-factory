@@ -1,0 +1,9 @@
+type ComponentProps = {};
+
+export default function Component({}: ComponentProps) {
+  return (
+    <div>
+      {/* Component */}
+    </div>
+  );
+}

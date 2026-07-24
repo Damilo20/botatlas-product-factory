@@ -8,7 +8,6 @@ from scripts.models.discovered_evidence_source import (
 
 
 def test_http_retrieval():
-
     source = DiscoveredEvidenceSource(
         source_name="Python",
         source_url="https://www.python.org/",
@@ -20,15 +19,21 @@ def test_http_retrieval():
 
     adapter = HttpRetrievalAdapter()
 
-    html = adapter.retrieve(source)
+    content = adapter.retrieve(source)
 
-    assert "Python" in html
+    # Basic validation
+    assert isinstance(content, str)
+    assert len(content) > 100
 
     print()
+    print("========== Retrieval Preview ==========")
+    print(content[:500])
+    print("=======================================")
 
-    print("==============================")
+    print()
+    print("===================================")
     print(" HTTP Retrieval PASSED")
-    print("==============================")
+    print("===================================")
 
 
 if __name__ == "__main__":

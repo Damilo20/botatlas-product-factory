@@ -1,54 +1,137 @@
-from scripts.models.claim_group import ClaimGroup
+"""
+BotAtlas Evidence Comparison Engine
+
+Compares weighted evidence assessments describing the same
+candidate field.
+
+Responsibilities
+----------------
+- Compare evidence relationships.
+- Identify agreement and conflict.
+- Preserve all evidence.
+
+Non-Responsibilities
+--------------------
+- Truth resolution
+- Claim verification
+- Knowledge persistence
+- Canonical value selection
+"""
+
 from scripts.models.evidence_comparison import (
     EvidenceComparison,
     EvidenceRelationship,
+)
+from scripts.models.weighted_evidence_assessment import (
+    WeightedEvidenceAssessment,
 )
 
 
 class EvidenceComparisonEngine:
     """
-    Layer 9 evidence relationship classification.
+    Layer 11 Evidence Comparison Engine.
 
-    Classifies grouped claims by exact distinct claimed values.
+    Compares weighted evidence describing the same product field.
 
-    Does not select a preferred value, verify evidence,
-    score authority, assign trust, or resolve claims.
+    This engine classifies evidence relationships without deciding
+    which value is correct.
     """
 
     def compare(
         self,
-        group: ClaimGroup,
+        assessments: list[WeightedEvidenceAssessment],
     ) -> EvidenceComparison:
+        """
+        Compare one collection of weighted evidence assessments.
+        """
+
+        if not assessments:
+            raise ValueError(
+                "EvidenceComparisonEngine requires at least one assessment."
+            )
+
+        claims = [
+            assessment.authority_assessment.claim
+            for assessment in assessments
+        ]
+
         distinct_values = list(
             dict.fromkeys(
-                claim.claimed_value
-                for claim in group.claims
+                (
+                    claim.claimed_value or ""
+                ).strip()
+                for claim in claims
             )
         )
 
-        if len(group.claims) < 2:
-            relationship = (
-                EvidenceRelationship.INSUFFICIENT_EVIDENCE
-            )
-        elif len(distinct_values) == 1:
-            relationship = EvidenceRelationship.AGREEMENT
-        else:
-            relationship = EvidenceRelationship.CONFLICT
+        relationship = self._relationship(
+            claims,
+            distinct_values,
+        )
+
+        first = claims[0]
 
         return EvidenceComparison(
-            parent_candidate_name=group.parent_candidate_name,
-            parent_candidate_url=group.parent_candidate_url,
-            field_name=group.field_name,
+            parent_candidate_name=first.parent_candidate_name,
+            parent_candidate_url=first.parent_candidate_url,
+            field_name=first.field_name,
             relationship=relationship,
             distinct_values=distinct_values,
-            claims=list(group.claims),
+            evidence=list(assessments),
         )
 
     def compare_all(
         self,
-        groups: list[ClaimGroup],
+        grouped_assessments: list[
+            list[WeightedEvidenceAssessment]
+        ],
     ) -> list[EvidenceComparison]:
+        """
+        Compare multiple groups of evidence.
+        """
+
         return [
             self.compare(group)
-            for group in groups
+            for group in grouped_assessments
         ]
+
+    @staticmethod
+    def _relationship(
+        claims: list,
+        distinct_values: list[str],
+    ) -> EvidenceRelationship:
+        """
+        Classify the descriptive relationship among evidence.
+
+        Future versions may normalize units, aliases,
+        equivalent values, and ranges before determining
+        PARTIAL_AGREEMENT.
+        """
+
+        if len(claims) < 2:
+            return (
+                EvidenceRelationship.INSUFFICIENT_EVIDENCE
+            )
+
+        if len(distinct_values) == 1:
+            return (
+                EvidenceRelationship.AGREEMENT
+            )
+
+        #
+        # Reserved for semantic normalization in future versions.
+        #
+        # Examples:
+        #
+        #   1.50 kg == 1.5 kilograms
+        #   $3,999 == 3999 USD
+        #   8 hr == 8 hours
+        #
+        # If equivalent values are detected, return:
+        #
+        #   EvidenceRelationship.PARTIAL_AGREEMENT
+        #
+
+        return (
+            EvidenceRelationship.CONFLICT
+        )

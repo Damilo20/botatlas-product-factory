@@ -1,11 +1,22 @@
 """
 BotAtlas HTTP Retrieval Adapter
 
-Retrieves live HTML content from discovered evidence sources.
+Live implementation of the EvidenceMaterialRetriever protocol.
 
-Implements the EvidenceMaterialRetriever protocol.
+Responsibilities:
+- Perform HTTP/HTTPS retrieval
+- Handle common HTTP content encodings
+- Decode response bytes into text
+
+Non-Responsibilities:
+- HTML parsing
+- Metadata extraction
+- Claim extraction
+- Trust scoring
+- Truth resolution
 """
 
+from gzip import decompress
 from urllib.request import Request, urlopen
 
 from scripts.engine.evidence_material_acquisition import (
@@ -17,10 +28,14 @@ from scripts.models.discovered_evidence_source import (
 
 
 class HttpRetrievalAdapter(EvidenceMaterialRetriever):
+    """
+    Retrieves raw text from HTTP/HTTPS evidence sources.
 
-    USER_AGENT = (
-        "BotAtlas/1.0 (+https://botatlas.ai)"
-    )
+    Returns decoded document content while preserving retrieval
+    as a separate concern from parsing and analysis.
+    """
+
+    USER_AGENT = "BotAtlas/1.0 (+https://botatlas.ai)"
 
     def retrieve(
         self,
@@ -31,12 +46,26 @@ class HttpRetrievalAdapter(EvidenceMaterialRetriever):
             source.source_url,
             headers={
                 "User-Agent": self.USER_AGENT,
+                "Accept": "*/*",
+                "Accept-Encoding": "gzip",
             },
         )
 
         with urlopen(request, timeout=30) as response:
 
-            return response.read().decode(
-                "utf-8",
-                errors="ignore",
+            data = response.read()
+
+            # Handle gzip-compressed responses
+            if response.headers.get("Content-Encoding") == "gzip":
+                data = decompress(data)
+
+            # Determine the correct character encoding
+            encoding = (
+                response.headers.get_content_charset()
+                or "utf-8"
+            )
+
+            return data.decode(
+                encoding,
+                errors="replace",
             )

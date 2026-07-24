@@ -29,4 +29,7 @@ class AttributedEvidenceClaim:
     attribution_method: str
 
     material_acquired_at: Optional[str] = None
+    document_title: Optional[str] = None
+    document_section: Optional[str] = None
+    sentence_index: Optional[int] = None
     active: bool = True

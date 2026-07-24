@@ -1,15 +1,31 @@
+from scripts.registry.knowledge_registry import (
+    KnowledgeRegistry,
+)
+
+
 class KnowledgeEngine:
-
     """
-    Central source of truth for BotAtlas.
+    Central access point for BotAtlas knowledge.
     """
 
-    def get_product(self, robot_name):
+    def __init__(
+        self,
+        registry: KnowledgeRegistry,
+    ):
 
-        print("🧠 Querying Knowledge Engine...")
+        self.registry = registry
 
-        return {
-            "manufacturer": "Figure AI",
-            "brand": "Figure",
-            "category": "Humanoid Robot"
-        }
+    def get_product(
+        self,
+        product_name: str,
+        field_name: str,
+    ):
+
+        return self.registry.get(
+            product_name,
+            field_name,
+        )
+
+    def all_knowledge(self):
+
+        return self.registry.all()

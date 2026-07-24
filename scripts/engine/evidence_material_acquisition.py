@@ -8,8 +8,7 @@ from scripts.models.retrieved_evidence_material import (
 )
 
 
-class EvidenceMaterialRetriever
-(Protocol):
+class EvidenceMaterialRetriever(Protocol):
     """
     Provider-neutral material retrieval boundary.
     """
